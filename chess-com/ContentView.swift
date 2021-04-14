@@ -6,11 +6,37 @@
 //
 
 import SwiftUI
+import WebKit
+
+struct WebView: NSViewRepresentable {
+
+    let view: WKWebView = WKWebView()
+
+    var request: URLRequest {
+        get {
+            let request: URLRequest = URLRequest(url: URL(string: "https://www.chess.com/home")!)
+            return request
+        }
+    }
+
+    func makeNSView(context: Context) -> WKWebView {
+        view.load(request)
+        return view
+    }
+
+    func updateNSView(_ view: WKWebView, context: Context) {
+    }
+
+}
 
 struct ContentView: View {
     var body: some View {
-        Text("Hello, World!")
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
+        GeometryReader { g in
+            ScrollView {
+                WebView()
+                .frame(height: g.size.height)
+            }.frame(height: g.size.height)
+        }
     }
 }
 
